@@ -7,14 +7,17 @@ import {
   Typography,
 } from "@mui/material";
 import FieldInput from "./FieldInput";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LoginData } from "../services/AuthServices";
 import { AuthContext } from "../context/AuthContext";
 import { validate } from "../helpers/validate";
+import "../assets/styles.css";
+import { useNavigate } from "react-router-dom";
+import { RegisterField } from "../pages/Register";
 
-const loginFields: { label: string; placeholder: string }[] = [
+const loginFields: RegisterField[] = [
   { label: "Email", placeholder: "example@gmail.com" },
-  { label: "Password", placeholder: "Password in!" },
+  { label: "Password", placeholder: "Password in!", type: "password" },
 ];
 
 const Login = () => {
@@ -24,11 +27,8 @@ const Login = () => {
   });
   const auth = useContext(AuthContext);
   const [validationMessage, setValidationMessage] = useState("");
-  const [loginError,setLoginError] = useState("");
-
-  const handleChange = (property: string, newValue: string) => {
-    setCredentials({ ...credentials, [property]: newValue });
-  };
+  const [loginError, setLoginError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = () => {
     console.log("Holis");
@@ -42,38 +42,37 @@ const Login = () => {
   };
 
   return (
-    <Box
-      sx={{
-        p: 2,
-        border: "solid 1px gray",
-        width: "40%",
-        height: "60%",
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
-        borderRadius: "10px",
-        backgroundColor: "white",
-      }}
-    >
+    <Box className="card-container">
       <Typography variant="h2" textAlign="center" sx={{ p: 2, pt: 5 }}>
         Log In
       </Typography>
       <FormControl sx={{ height: "100%", justifyContent: "center" }}>
         <Stack gap={2}>
           {loginFields.map((field) => (
-            <FieldInput
+            <FieldInput<LoginData>
               label={field.label}
               key={field.label}
-              placeholder={field.placeholder}
-              onChange={handleChange}
+              placeholder={field.placeholder || ""}
+              type={field.type}
+              referenceObject={credentials}
+              setObject={setCredentials}
             />
           ))}
           <Button variant="contained" size="large" onClick={handleSubmit}>
             Get in, loser!
           </Button>
+          <Button
+            size="small"
+            sx={{ textTransform: "none", px: 0.5 }}
+            onClick={() => navigate("/register")}
+          >
+            This way if you're not registered
+          </Button>
         </Stack>
       </FormControl>
-      {validationMessage ? <Alert severity="warning">{validationMessage}</Alert> : null}
+      {validationMessage ? (
+        <Alert severity="warning">{validationMessage}</Alert>
+      ) : null}
       {loginError ? <Alert severity="warning">{loginError}</Alert> : null}
     </Box>
   );

@@ -1,20 +1,12 @@
-import Login from "./components/Login";
+import { useContext } from "react";
+import { AuthContext } from "./context/AuthContext";
+import Logged from "./pages/Logged";
+import NotLogged from "./pages/NotLogged";
 
 function App() {
-  return (
-    <div
-      style={{
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "gray"
-      }}
-    >
-      <Login />
-    </div>
-  );
+  const auth = useContext(AuthContext);
+
+  return auth.username ? <Logged /> : <NotLogged />;
 }
 
 export default App;

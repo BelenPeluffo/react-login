@@ -1,26 +1,39 @@
 import { TextField } from "@mui/material";
+import { handleFieldChange } from "../helpers/formHandlers";
 
-interface FieldInputProps {
+interface FieldInputProps<objectType> {
   label: string;
-  placeholder: string;
-  onChange: (property: string, newValue: string) => void;
+  placeholder?: string;
+  type?: string;
+  referenceObject: objectType;
+  setObject: (state: React.SetStateAction<objectType>) => void;
 }
 
-const FieldInput = ({ label, placeholder, onChange }: FieldInputProps) => {
-  const handleChange = (property: string, newValue: string) => {
-    onChange(property, newValue);
-  };
-
+function FieldInput<objectType>({
+  label,
+  placeholder,
+  type,
+  referenceObject,
+  setObject,
+}: FieldInputProps<objectType>) {
   return (
     <>
       <TextField
         variant="filled"
         label={label}
         placeholder={placeholder}
-        onChange={(event) => handleChange(label.toLowerCase(), event.target.value)}
+        onChange={(event) => {
+          handleFieldChange<objectType>(
+            label.toLowerCase(),
+            event.target.value,
+            referenceObject as objectType,
+            setObject
+          );
+        }}
+        type={type}
       />
     </>
   );
-};
+}
 
 export default FieldInput;

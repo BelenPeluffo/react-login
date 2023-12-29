@@ -1,6 +1,16 @@
-import { Box, Button, FormControl, Stack, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  FormControl,
+  Stack,
+  Typography,
+} from "@mui/material";
 import FieldInput from "./FieldInput";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useContext, useState } from "react";
+import { LoginData } from "../services/AuthServices";
+import { AuthContext } from "../context/AuthContext";
+import { validate } from "../helpers/validate";
 
 const loginFields: { label: string; placeholder: string }[] = [
   { label: "Email", placeholder: "example@gmail.com" },
@@ -8,20 +18,28 @@ const loginFields: { label: string; placeholder: string }[] = [
 ];
 
 const Login = () => {
-  const [credentials, setCredentials] = useState<{
-    email: string;
-    password: string;
-  }>({ email: "", password: "" });
+  const [credentials, setCredentials] = useState<LoginData>({
+    email: "",
+    password: "",
+  });
+  const auth = useContext(AuthContext);
+  const [validationMessage, setValidationMessage] = useState("");
+  const [loginError,setLoginError] = useState("");
 
   const handleChange = (property: string, newValue: string) => {
     setCredentials({ ...credentials, [property]: newValue });
   };
 
-  const handleSubmit = () => {};
-
-  useEffect(() => {
-    console.log('credentials?',credentials);
-  },[credentials])
+  const handleSubmit = () => {
+    console.log("Holis");
+    const isDataValid = validate();
+    if (isDataValid) {
+      const error = auth.login(credentials);
+      setLoginError(error ? error : "");
+    } else {
+      setValidationMessage("No");
+    }
+  };
 
   return (
     <Box
@@ -50,11 +68,13 @@ const Login = () => {
               onChange={handleChange}
             />
           ))}
-          <Button variant="contained" size="large">
+          <Button variant="contained" size="large" onClick={handleSubmit}>
             Get in, loser!
           </Button>
         </Stack>
       </FormControl>
+      {validationMessage ? <Alert severity="warning">{validationMessage}</Alert> : null}
+      {loginError ? <Alert severity="warning">{loginError}</Alert> : null}
     </Box>
   );
 };

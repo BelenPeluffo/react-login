@@ -1,11 +1,11 @@
 import { createContext } from "react";
 
-interface AuthState {
+export interface AuthState {
   username: string;
-  password: string;
+  sign: string;
 }
 
 export const AuthContext = createContext<AuthState>({
   username: "",
-  password: "",
+  sign: "",
 });

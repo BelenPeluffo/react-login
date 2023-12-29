@@ -1,6 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { AuthContext } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
+import { LoginData, User, getUser } from "../services/AuthServices";
 
 export const AuthState = ({ children }: { children: React.ReactNode }) => {
-  return <AuthContext.Provider value={}>{children}</AuthContext.Provider>;
+  const [user, setUser] = useState<User>({
+    name: "",
+    email: "",
+    password: "",
+    sign: "",
+  });
+  const [token, setToken] = useState<string>(
+    localStorage.getItem("token") || ""
+  );
+  const navigate = useNavigate();
+
+  const login = (userData: LoginData) => {
+    try {
+      const response = getUser(userData.email, userData.password);
+      if (response) {
+        setUser(response.user);
+        setToken(response.token);
+        localStorage.setItem("token", response.token);
+        // navigate();
+        return;
+      }
+      throw new Error("The user or the password is not correct.");
+    } catch (error) {
+      return error;
+    }
+  };
+
+  const logout = () => {};
+
+  return (
+    <AuthContext.Provider value={{ user, token, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

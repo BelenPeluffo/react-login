@@ -6,7 +6,7 @@ import NotLogged from "./pages/NotLogged";
 function App() {
   const auth = useContext(AuthContext);
 
-  return auth.username ? <Logged /> : <NotLogged />;
+  return auth.token ? <Logged /> : <NotLogged />;
 }
 
 export default App;

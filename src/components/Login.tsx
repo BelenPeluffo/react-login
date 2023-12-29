@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import FieldInput from "./FieldInput";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { LoginData } from "../services/AuthServices";
 import { AuthContext } from "../context/AuthContext";
 import { validate } from "../helpers/validate";
@@ -59,14 +59,14 @@ const Login = () => {
             />
           ))}
           <Button variant="contained" size="large" onClick={handleSubmit}>
-            Get in, loser!
+            들어와, loser!
           </Button>
           <Button
             size="small"
             sx={{ textTransform: "none", px: 0.5 }}
             onClick={() => navigate("/register")}
           >
-            This way if you're not registered
+            아직도 register을 하지 않았으면 이쪽으로 들어오세요.
           </Button>
         </Stack>
       </FormControl>

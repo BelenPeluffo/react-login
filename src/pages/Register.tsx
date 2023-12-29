@@ -1,8 +1,8 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import FieldInput from "../components/FieldInput";
 import { useState } from "react";
-import { handleFieldChange } from "../helpers/formHandlers";
 import { useNavigate } from "react-router-dom";
+import { FormProvider, useForm } from "react-hook-form";
 
 export interface RegisterField {
   label: string;
@@ -32,6 +32,13 @@ const Register = () => {
     email: "",
   });
   const navigate = useNavigate();
+  const methods = useForm<Registration>();
+  const onSubmit = () => {
+    console.log("registration?", registration);
+    methods.handleSubmit((data) => {
+      console.log("data?", data);
+    });
+  };
 
   return (
     <div className="main-container">
@@ -57,18 +64,20 @@ const Register = () => {
           </Typography>
         </Box>
         <Stack gap={2}>
-          {registerFields.map((field) => (
-            <FieldInput<Registration>
-              label={field.label}
-              key={field.label}
-              type={field.type}
-              referenceObject={registration}
-              setObject={setRegistration}
-            />
-          ))}
-          <Button variant="contained" size="large">
-            갑시다!!
-          </Button>
+          <FormProvider {...methods}>
+            {registerFields.map((field) => (
+              <FieldInput<Registration>
+                label={field.label}
+                key={field.label}
+                type={field.type}
+                referenceObject={registration}
+                setObject={setRegistration}
+              />
+            ))}
+            <Button variant="contained" size="large" onClick={onSubmit}>
+              갑시다!!
+            </Button>
+          </FormProvider>
           <Button size="small" onClick={() => navigate("/")}>
             집으로 데려가 주세요.
           </Button>

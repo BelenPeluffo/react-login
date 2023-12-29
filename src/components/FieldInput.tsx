@@ -1,5 +1,6 @@
 import { TextField } from "@mui/material";
 import { handleFieldChange } from "../helpers/formHandlers";
+import { useForm } from "react-hook-form";
 
 interface FieldInputProps<objectType> {
   label: string;
@@ -16,15 +17,17 @@ function FieldInput<objectType>({
   referenceObject,
   setObject,
 }: FieldInputProps<objectType>) {
+  const { register } = useForm();
   return (
     <>
       <TextField
         variant="filled"
         label={label}
         placeholder={placeholder}
+        {...register(label.toLowerCase())}
         onChange={(event) => {
           handleFieldChange<objectType>(
-            label.toLowerCase(),
+            label.split(" ")[0].toLowerCase(),
             event.target.value,
             referenceObject as objectType,
             setObject

@@ -1,7 +1,8 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import FieldInput from "../components/FieldInput";
 import { useState } from "react";
 import { handleFieldChange } from "../helpers/formHandlers";
+import { useNavigate } from "react-router-dom";
 
 export interface RegisterField {
   label: string;
@@ -30,10 +31,11 @@ const Register = () => {
     password: "",
     email: "",
   });
+  const navigate = useNavigate();
 
   return (
-    <div className="main-container" sx={{ height: "80px" }}>
-      <Box className="card-container">
+    <div className="main-container">
+      <Box className="card-container register-form">
         <Box
           sx={{
             p: 2,
@@ -45,7 +47,7 @@ const Register = () => {
           }}
         >
           <Typography variant="h3" sx={{ p: 0, lineHeight: 1 }}>
-            Don't wait!
+            기다리지 마세요!
           </Typography>
           <Typography
             variant="h2"
@@ -58,11 +60,18 @@ const Register = () => {
           {registerFields.map((field) => (
             <FieldInput<Registration>
               label={field.label}
+              key={field.label}
               type={field.type}
               referenceObject={registration}
-              setObject={() => setRegistration}
+              setObject={setRegistration}
             />
           ))}
+          <Button variant="contained" size="large">
+            갑시다!!
+          </Button>
+          <Button size="small" onClick={() => navigate("/")}>
+            집으로 데려가 주세요.
+          </Button>
         </Stack>
       </Box>
     </div>

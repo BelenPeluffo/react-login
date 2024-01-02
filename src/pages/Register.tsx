@@ -71,7 +71,10 @@ const Register = () => {
                   referenceObject={registration}
                   setObject={setRegistration}
                   validations={{
-                    required: { value: true, message: "required" },
+                    required: {
+                      value: true,
+                      message: `required: ${field.label}`,
+                    },
                   }}
                 />
               ))}

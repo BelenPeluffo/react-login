@@ -25,9 +25,10 @@ function FieldInput<objectType>({
     formState: { errors },
   } = useFormContext();
   const lowercaseLabel = label.toLowerCase();
-  const inputError = Object.keys(errors).filter((key) =>
-    key.includes(lowercaseLabel)
-  );
+  const inputError =
+    errors[
+      Object.keys(errors).filter((key) => key.includes(lowercaseLabel))[0]
+    ];
   const isFieldValid =
     Object.keys(errors).filter((key) => key.includes(lowercaseLabel)).length ===
     0;
@@ -49,7 +50,9 @@ function FieldInput<objectType>({
         }}
         type={type}
       />
-      {!isFieldValid && <Typography sx={{ pt: 0 }}>required</Typography>}
+      {!isFieldValid && (
+        <Typography sx={{ pt: 0 }}>{inputError.message}</Typography>
+      )}
     </>
   );
 }

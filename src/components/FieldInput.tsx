@@ -18,15 +18,19 @@ function FieldInput<objectType>({
   type,
   referenceObject,
   setObject,
-  validations
+  validations,
 }: FieldInputProps<objectType>) {
   const {
     register,
     formState: { errors },
   } = useFormContext();
-  console.log("errors?", errors);
+  const lowercaseLabel = label.toLowerCase();
+  const inputError = Object.keys(errors).filter((key) =>
+    key.includes(lowercaseLabel)
+  );
   const isFieldValid =
-    Object.keys(errors).filter((key) => key.includes(label)).length > 0;
+    Object.keys(errors).filter((key) => key.includes(lowercaseLabel)).length ===
+    0;
 
   return (
     <>
@@ -34,10 +38,10 @@ function FieldInput<objectType>({
         variant="filled"
         label={label}
         placeholder={placeholder}
-        {...register(label.toLowerCase(), validations)}
+        {...register(lowercaseLabel, validations)}
         onChange={(event) => {
           handleFieldChange<objectType>(
-            label.split(" ")[0].toLowerCase(),
+            lowercaseLabel.split(" ")[0],
             event.target.value,
             referenceObject as objectType,
             setObject
@@ -45,9 +49,7 @@ function FieldInput<objectType>({
         }}
         type={type}
       />
-      {!isFieldValid && (
-        <Typography sx={{ pt: 0 }}>This field is required.</Typography>
-      )}
+      {!isFieldValid && <Typography sx={{ pt: 0 }}>required</Typography>}
     </>
   );
 }

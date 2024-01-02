@@ -73,9 +73,6 @@ const Register = () => {
                   validations={{
                     required: { value: true, message: "required" },
                   }}
-                  error={
-                    methods.formState.errors[field.label as keyof Registration]
-                  }
                 />
               ))}
               <Button variant="contained" size="large" onClick={onSubmit}>

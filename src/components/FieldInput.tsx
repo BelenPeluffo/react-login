@@ -26,12 +26,9 @@ function FieldInput<objectType>({
   } = useFormContext();
   const lowercaseLabel = label.toLowerCase();
   const inputError =
-    errors[
-      Object.keys(errors).filter((key) => key.includes(lowercaseLabel))[0]
-    ];
+    errors[Object.keys(errors).filter((key) => key === lowercaseLabel)[0]];
   const isFieldValid =
-    Object.keys(errors).filter((key) => key.includes(lowercaseLabel)).length ===
-    0;
+    Object.keys(errors).filter((key) => key === lowercaseLabel).length === 0;
 
   return (
     <>

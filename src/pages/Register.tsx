@@ -19,7 +19,7 @@ const registerFields: RegisterField[] = [
   { label: "Confirm password", type: "password" },
 ];
 
-interface Registration {
+export interface Registration {
   name: string;
   password: string;
   email: string;
@@ -33,12 +33,9 @@ const Register = () => {
   });
   const navigate = useNavigate();
   const methods = useForm<Registration>();
-  const onSubmit = () => {
-    console.log("registration?", registration);
-    methods.handleSubmit((data) => {
-      console.log("data?", data);
-    });
-  };
+  const onSubmit = methods.handleSubmit((data) => {
+    console.log("data?", data);
+  });
 
   return (
     <div className="main-container">
@@ -63,25 +60,33 @@ const Register = () => {
             Register now!
           </Typography>
         </Box>
-        <Stack gap={2}>
-          <FormProvider {...methods}>
-            {registerFields.map((field) => (
-              <FieldInput<Registration>
-                label={field.label}
-                key={field.label}
-                type={field.type}
-                referenceObject={registration}
-                setObject={setRegistration}
-              />
-            ))}
-            <Button variant="contained" size="large" onClick={onSubmit}>
-              갑시다!!
-            </Button>
-          </FormProvider>
-          <Button size="small" onClick={() => navigate("/")}>
-            집으로 데려가 주세요.
-          </Button>
-        </Stack>
+        <FormProvider {...methods}>
+          <form noValidate onSubmit={(event) => event.preventDefault}>
+            <Stack gap={2}>
+              {registerFields.map((field) => (
+                <FieldInput<Registration>
+                  label={field.label}
+                  key={field.label}
+                  type={field.type}
+                  referenceObject={registration}
+                  setObject={setRegistration}
+                  validations={{
+                    required: { value: true, message: "required" },
+                  }}
+                  error={
+                    methods.formState.errors[field.label as keyof Registration]
+                  }
+                />
+              ))}
+              <Button variant="contained" size="large" onClick={onSubmit}>
+                갑시다!!
+              </Button>
+              <Button size="small" onClick={() => navigate("/")}>
+                집으로 데려가 주세요.
+              </Button>
+            </Stack>
+          </form>
+        </FormProvider>
       </Box>
     </div>
   );

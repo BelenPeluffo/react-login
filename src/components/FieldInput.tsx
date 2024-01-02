@@ -1,6 +1,12 @@
 import { TextField, Typography } from "@mui/material";
 import { handleFieldChange } from "../helpers/formHandlers";
-import { FieldError, RegisterOptions, useFormContext } from "react-hook-form";
+import {
+  FieldError,
+  FieldErrorsImpl,
+  Merge,
+  RegisterOptions,
+  useFormContext,
+} from "react-hook-form";
 
 interface FieldInputProps<objectType> {
   label: string;
@@ -25,7 +31,10 @@ function FieldInput<objectType>({
     formState: { errors },
   } = useFormContext();
   const lowercaseLabel = label.toLowerCase();
-  const inputError =
+  const inputError:
+    | FieldError
+    | Merge<FieldError, FieldErrorsImpl<any>>
+    | undefined =
     errors[Object.keys(errors).filter((key) => key === lowercaseLabel)[0]];
   const isFieldValid =
     Object.keys(errors).filter((key) => key === lowercaseLabel).length === 0;
@@ -47,8 +56,8 @@ function FieldInput<objectType>({
         }}
         type={type}
       />
-      {!isFieldValid && (
-        <Typography sx={{ pt: 0 }}>{inputError.message}</Typography>
+      {!isFieldValid && inputError && (
+        <Typography sx={{ pt: 0 }}>{inputError.message as string}</Typography>
       )}
     </>
   );

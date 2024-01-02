@@ -1,7 +1,6 @@
 import { TextField, Typography } from "@mui/material";
 import { handleFieldChange } from "../helpers/formHandlers";
 import { FieldError, RegisterOptions, useFormContext } from "react-hook-form";
-import { useEffect } from "react";
 
 interface FieldInputProps<objectType> {
   label: string;
@@ -19,13 +18,16 @@ function FieldInput<objectType>({
   type,
   referenceObject,
   setObject,
-  validations,
-  error,
+  validations
 }: FieldInputProps<objectType>) {
-  const { register } = useFormContext();
-  useEffect(() => {
-    console.log("error?", error);
-  }, [error]);
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+  console.log("errors?", errors);
+  const isFieldValid =
+    Object.keys(errors).filter((key) => key.includes(label)).length > 0;
+
   return (
     <>
       <TextField
@@ -43,7 +45,9 @@ function FieldInput<objectType>({
         }}
         type={type}
       />
-      {error && <Typography>This field is required.</Typography>}
+      {!isFieldValid && (
+        <Typography sx={{ pt: 0 }}>This field is required.</Typography>
+      )}
     </>
   );
 }

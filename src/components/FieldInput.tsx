@@ -1,6 +1,7 @@
-import { TextField } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import { handleFieldChange } from "../helpers/formHandlers";
-import { useForm } from "react-hook-form";
+import { FieldError, RegisterOptions, useFormContext } from "react-hook-form";
+import { useEffect } from "react";
 
 interface FieldInputProps<objectType> {
   label: string;
@@ -8,6 +9,8 @@ interface FieldInputProps<objectType> {
   type?: string;
   referenceObject: objectType;
   setObject: (state: React.SetStateAction<objectType>) => void;
+  validations?: RegisterOptions;
+  error?: FieldError;
 }
 
 function FieldInput<objectType>({
@@ -16,15 +19,20 @@ function FieldInput<objectType>({
   type,
   referenceObject,
   setObject,
+  validations,
+  error,
 }: FieldInputProps<objectType>) {
-  const { register } = useForm();
+  const { register } = useFormContext();
+  useEffect(() => {
+    console.log("error?", error);
+  }, [error]);
   return (
     <>
       <TextField
         variant="filled"
         label={label}
         placeholder={placeholder}
-        {...register(label.toLowerCase())}
+        {...register(label.toLowerCase(), validations)}
         onChange={(event) => {
           handleFieldChange<objectType>(
             label.split(" ")[0].toLowerCase(),
@@ -35,6 +43,7 @@ function FieldInput<objectType>({
         }}
         type={type}
       />
+      {error && <Typography>This field is required.</Typography>}
     </>
   );
 }

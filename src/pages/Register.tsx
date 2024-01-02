@@ -2,21 +2,54 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import FieldInput from "../components/FieldInput";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, RegisterOptions, useForm } from "react-hook-form";
 
 export interface RegisterField {
   label: string;
   type?: string;
   placeholder?: string;
+  validation: RegisterOptions;
 }
 
 const registerFields: RegisterField[] = [
   {
     label: "Name",
+    validation: {
+      required: {
+        value: true,
+        message: `required: name`,
+      },
+    },
   },
-  { label: "Email address" },
-  { label: "Password", type: "password" },
-  { label: "Confirm password", type: "password" },
+  {
+    label: "Email address",
+    validation: {
+      required: {
+        value: true,
+        message: `required: email address`,
+      },
+    },
+  },
+  {
+    label: "Password",
+    type: "password",
+    validation: {
+      required: {
+        value: true,
+        message: `required: password`,
+      },
+    },
+  },
+  {
+    label: "Confirm password",
+    type: "password",
+    validation: {
+      required: {
+        value: true,
+        message: `required: password confirmation`,
+      },
+    },
+  },
 ];
 
 export interface Registration {
@@ -70,12 +103,7 @@ const Register = () => {
                   type={field.type}
                   referenceObject={registration}
                   setObject={setRegistration}
-                  validations={{
-                    required: {
-                      value: true,
-                      message: `required: ${field.label}`,
-                    },
-                  }}
+                  validations={field.validation}
                 />
               ))}
               <Button variant="contained" size="large" onClick={onSubmit}>

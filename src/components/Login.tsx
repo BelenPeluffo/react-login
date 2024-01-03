@@ -13,12 +13,22 @@ import { AuthContext } from "../context/AuthContext";
 import { validate } from "../helpers/validate";
 import "../assets/styles.css";
 import { useNavigate } from "react-router-dom";
-import { RegisterField } from "../pages/Register";
 import { FormProvider, useForm } from "react-hook-form";
+import { FormField } from "../config/register";
 
-const loginFields: RegisterField[] = [
-  { label: "Email", placeholder: "example@gmail.com" },
-  { label: "Password", placeholder: "Password in!", type: "password" },
+const loginFields: FormField[] = [
+  {
+    label: "Email",
+    placeholder: "example@gmail.com",
+    type: "text",
+    id: "email",
+  },
+  {
+    label: "Password",
+    placeholder: "Password in!",
+    type: "password",
+    id: "password",
+  },
 ];
 
 const Login = () => {
@@ -48,6 +58,11 @@ const Login = () => {
       <Typography variant="h2" textAlign="center" sx={{ p: 2, pt: 5 }}>
         Log In
       </Typography>
+      {loginError ? (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          {loginError}
+        </Alert>
+      ) : null}
       <FormProvider {...methods}>
         <FormControl sx={{ height: "100%", justifyContent: "center" }}>
           <Stack gap={2}>
@@ -59,6 +74,7 @@ const Login = () => {
                 type={field.type}
                 referenceObject={credentials}
                 setObject={setCredentials}
+                name={field.id}
               />
             ))}
             <Button variant="contained" size="large" onClick={handleSubmit}>
@@ -77,7 +93,6 @@ const Login = () => {
       {validationMessage ? (
         <Alert severity="warning">{validationMessage}</Alert>
       ) : null}
-      {loginError ? <Alert severity="warning">{loginError}</Alert> : null}
     </Box>
   );
 };

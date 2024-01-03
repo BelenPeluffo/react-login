@@ -18,17 +18,12 @@ function FieldInput<objectType>({
   type,
   referenceObject,
   setObject,
-}:
-FieldInputProps<objectType>) {
+}: FieldInputProps<objectType>) {
   const {
     register,
     formState: { errors },
   } = useFormContext();
-  const lowercaseLabel = label.toLowerCase();
-  useEffect(() => {
-    console.log("errors?", errors);
-    console.log(`errors[${label}]?`);
-  }, [errors]);
+  const lowercaseLabel = label.toLowerCase().split(" ")[0];
 
   return (
     <>
@@ -39,7 +34,7 @@ FieldInputProps<objectType>) {
         {...register(lowercaseLabel)}
         onChange={(event) => {
           handleFieldChange<objectType>(
-            lowercaseLabel.split(" ")[0],
+            lowercaseLabel,
             event.target.value,
             referenceObject as objectType,
             setObject

@@ -2,20 +2,21 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import FieldInput from "../components/FieldInput";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FormProvider, RegisterOptions, useForm } from "react-hook-form";
-import { registerFields } from "../config/register";
+import { FormProvider, useForm } from "react-hook-form";
+import { registerFields, registerValidationSchema } from "../config/register";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export interface RegisterField {
   label: string;
   type?: string;
   placeholder?: string;
-  validation: RegisterOptions;
 }
 
 export interface Registration {
   name: string;
   password: string;
   email: string;
+  confirm: string;
 }
 
 const Register = () => {
@@ -23,9 +24,12 @@ const Register = () => {
     name: "",
     password: "",
     email: "",
+    confirm: "",
   });
   const navigate = useNavigate();
-  const methods = useForm<Registration>();
+  const methods = useForm<Registration>({
+    resolver: yupResolver(registerValidationSchema),
+  });
   const onSubmit = methods.handleSubmit((data) => {
     console.log("data?", data);
   });
@@ -63,7 +67,6 @@ const Register = () => {
                   type={field.type}
                   referenceObject={registration}
                   setObject={setRegistration}
-                  validations={field.validation}
                 />
               ))}
               <Button variant="contained" size="large" onClick={onSubmit}>

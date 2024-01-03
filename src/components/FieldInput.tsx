@@ -13,6 +13,7 @@ interface FieldInputProps<objectType> {
   error?: FieldError;
   name: string;
   options?: Option[];
+  width?: string;
 }
 
 function FieldInput<objectType>({
@@ -23,6 +24,7 @@ function FieldInput<objectType>({
   setObject,
   name,
   options,
+  width,
 }: FieldInputProps<objectType>) {
   const {
     register,
@@ -47,11 +49,12 @@ function FieldInput<objectType>({
           }}
           type={type}
           error={!!errors[name]}
+          sx={{ width: width }}
         />
       )}
 
       {type === "dropdown" && options && (
-        <Select label={label}>
+        <Select label={label} sx={{ width: width }}>
           {options.map((option) => (
             <MenuItem value={option.value}>{option.label}</MenuItem>
           ))}

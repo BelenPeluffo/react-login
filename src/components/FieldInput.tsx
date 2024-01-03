@@ -1,7 +1,6 @@
 import { TextField, Typography } from "@mui/material";
 import { handleFieldChange } from "../helpers/formHandlers";
 import { FieldError, useFormContext } from "react-hook-form";
-import { useEffect } from "react";
 
 interface FieldInputProps<objectType> {
   label: string;

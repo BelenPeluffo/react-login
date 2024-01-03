@@ -9,6 +9,7 @@ export interface FormField {
   placeholder?: string;
   id: string;
   options?: Option[];
+  width?: string;
 }
 
 export interface Registration {

@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+import { Option } from "./stepOneForm";
 
 export type FieldType = "text" | "password" | "dropdown" | "date";
 
@@ -7,6 +8,7 @@ export interface FormField {
   type: FieldType;
   placeholder?: string;
   id: string;
+  options?: Option[];
 }
 
 export interface Registration {

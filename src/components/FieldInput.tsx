@@ -1,8 +1,17 @@
-import { MenuItem, Select, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { handleFieldChange } from "../helpers/formHandlers";
 import { FieldError, useFormContext } from "react-hook-form";
 import { FieldType } from "../config/register";
 import { Option } from "../config/stepOneForm";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 interface FieldInputProps<objectType> {
   label: string;
@@ -32,7 +41,7 @@ function FieldInput<objectType>({
   } = useFormContext();
 
   return (
-    <>
+    <Box sx={{ width: width }}>
       {(type === "text" || type === "password") && (
         <TextField
           variant="filled"
@@ -49,20 +58,28 @@ function FieldInput<objectType>({
           }}
           type={type}
           error={!!errors[name]}
-          sx={{ width: width }}
+          sx={{ width: "100%" }}
         />
       )}
 
       {type === "dropdown" && options && (
-        <Select label={label} sx={{ width: width }}>
-          {options.map((option) => (
-            <MenuItem value={option.value}>{option.label}</MenuItem>
-          ))}
-        </Select>
+        <Box sx={{ width: "100%" }}>
+          <InputLabel>{label}</InputLabel>
+          <Select displayEmpty sx={{ width: "100%" }} error={!!errors[name]}>
+            <MenuItem>
+              <em>Seleccioná {label.toLowerCase()}</em>
+            </MenuItem>
+            {options.map((option) => (
+              <MenuItem value={option.value}>{option.label}</MenuItem>
+            ))}
+          </Select>
+        </Box>
       )}
 
-      {type !== "text" && type !== "password" && type !== "dropdown" && (
-        <Typography>{label}</Typography>
+      {type === "date" && (
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker label={label} sx={{ width: "100%" }} />
+        </LocalizationProvider>
       )}
 
       {errors && (
@@ -70,7 +87,7 @@ function FieldInput<objectType>({
           {errors?.[name]?.message as string}
         </Typography>
       )}
-    </>
+    </Box>
   );
 }
 

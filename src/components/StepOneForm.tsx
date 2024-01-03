@@ -35,20 +35,18 @@ const StepOneForm = () => {
     >
       <Typography variant="h5">Información dxl estudiante</Typography>
       <FormProvider {...methods}>
-        <form
-          noValidate
-          onSubmit={(event) => event.preventDefault}
-        >
-          <Stack gap={2} sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
+        <form noValidate onSubmit={(event) => event.preventDefault}>
+          <Stack direction="row" flexWrap="wrap" width="100%" gap={2} p={3}>
             {stepOneFields.map((field) => (
               <FieldInput<StepOneData>
                 label={field.label}
                 referenceObject={stepOneData}
                 setObject={setStepOneData}
-                key={field.label}
+                key={field.id}
                 name={field.id}
                 type={field.type}
-                options={field.options && field.options}
+                options={field.options}
+                width={field.width}
               />
             ))}
           </Stack>

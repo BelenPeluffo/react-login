@@ -1,12 +1,7 @@
 import { TextField, Typography } from "@mui/material";
 import { handleFieldChange } from "../helpers/formHandlers";
-import {
-  FieldError,
-  FieldErrorsImpl,
-  Merge,
-  RegisterOptions,
-  useFormContext,
-} from "react-hook-form";
+import { FieldError, useFormContext } from "react-hook-form";
+import { useEffect } from "react";
 
 interface FieldInputProps<objectType> {
   label: string;
@@ -14,7 +9,6 @@ interface FieldInputProps<objectType> {
   type?: string;
   referenceObject: objectType;
   setObject: (state: React.SetStateAction<objectType>) => void;
-  validations?: RegisterOptions;
   error?: FieldError;
 }
 
@@ -24,20 +18,17 @@ function FieldInput<objectType>({
   type,
   referenceObject,
   setObject,
-  validations,
-}: FieldInputProps<objectType>) {
+}:
+FieldInputProps<objectType>) {
   const {
     register,
     formState: { errors },
   } = useFormContext();
   const lowercaseLabel = label.toLowerCase();
-  const inputError:
-    | FieldError
-    | Merge<FieldError, FieldErrorsImpl<any>>
-    | undefined =
-    errors[Object.keys(errors).filter((key) => key === lowercaseLabel)[0]];
-  const isFieldValid =
-    Object.keys(errors).filter((key) => key === lowercaseLabel).length === 0;
+  useEffect(() => {
+    console.log("errors?", errors);
+    console.log(`errors[${label}]?`);
+  }, [errors]);
 
   return (
     <>
@@ -45,7 +36,7 @@ function FieldInput<objectType>({
         variant="filled"
         label={label}
         placeholder={placeholder}
-        {...register(lowercaseLabel, validations)}
+        {...register(lowercaseLabel)}
         onChange={(event) => {
           handleFieldChange<objectType>(
             lowercaseLabel.split(" ")[0],
@@ -55,9 +46,12 @@ function FieldInput<objectType>({
           );
         }}
         type={type}
+        error={!!errors[lowercaseLabel]}
       />
-      {!isFieldValid && inputError && (
-        <Typography sx={{ pt: 0 }}>{inputError.message as string}</Typography>
+      {errors && (
+        <Typography sx={{ pt: 0 }}>
+          {errors?.[lowercaseLabel]?.message as string}
+        </Typography>
       )}
     </>
   );

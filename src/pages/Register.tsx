@@ -6,12 +6,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { registerFields, registerValidationSchema } from "../config/register";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-export interface RegisterField {
-  label: string;
-  type?: string;
-  placeholder?: string;
-}
-
 export interface Registration {
   name: string;
   password: string;

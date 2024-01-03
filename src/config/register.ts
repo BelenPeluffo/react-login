@@ -1,7 +1,12 @@
-import { RegisterField } from "../pages/Register";
 import * as Yup from "yup";
 
-export const registerFields: RegisterField[] = [
+export interface FormField {
+  label: string;
+  type?: string;
+  placeholder?: string;
+}
+
+export const registerFields: FormField[] = [
   {
     label: "Name",
   },

@@ -38,9 +38,8 @@ const StepOneForm = () => {
         <form
           noValidate
           onSubmit={(event) => event.preventDefault}
-          style={{ display: "flex", flexDirection: "row" }}
         >
-          <Stack gap={2}>
+          <Stack gap={2} sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
             {stepOneFields.map((field) => (
               <FieldInput<StepOneData>
                 label={field.label}
@@ -49,6 +48,7 @@ const StepOneForm = () => {
                 key={field.label}
                 name={field.id}
                 type={field.type}
+                options={field.options && field.options}
               />
             ))}
           </Stack>

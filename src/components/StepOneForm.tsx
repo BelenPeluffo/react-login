@@ -1,8 +1,9 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
 import FieldInput from "./FieldInput";
-import { StepOneData, stepOneFields } from "../config/stepOneForm";
-import { useEffect, useState } from "react";
+import { StepOneData, stepOneFields, stepOneFormValidationSchema } from "../config/stepOneForm";
+import { useState } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const StepOneForm = () => {
   const [stepOneData, setStepOneData] = useState<StepOneData>({
@@ -18,11 +19,21 @@ const StepOneForm = () => {
     schoolYear: 2,
     grade: 2,
   });
-  const methods = useForm<StepOneData>();
+  const methods = useForm<StepOneData>({
+    resolver: yupResolver(stepOneFormValidationSchema)
+  });
 
-  useEffect(() => {
-    console.log("stepOneFields?", stepOneFields);
-  }, []);
+  const onCancel = () => {}
+
+  const onSave = methods.handleSubmit((data) => {
+    console.log('data?',data);
+    // const isValid = stepOneFormValidationSchema.validate(data);
+    // console.log('isValid?',isValid);
+  })
+
+  const onNext = () => {
+    onSave();
+  }
 
   return (
     <Box
@@ -36,7 +47,7 @@ const StepOneForm = () => {
       <Typography variant="h5">Información dxl estudiante</Typography>
       <FormProvider {...methods}>
         <form noValidate onSubmit={(event) => event.preventDefault}>
-          <Stack direction="row" flexWrap="wrap" width="100%" gap={2} p={3}>
+          <Stack direction="row" flexWrap="wrap" width="100%" gap={2} p={3} alignItems="flex-end">
             {stepOneFields.map((field) => (
               <FieldInput<StepOneData>
                 label={field.label}
@@ -50,7 +61,9 @@ const StepOneForm = () => {
               />
             ))}
           </Stack>
-          <Button>Yas</Button>
+          <Button onClick={onCancel}>Cancelar</Button>
+          <Button onClick={onSave}>Guardar</Button>
+          <Button onClick={onNext}>Continuar</Button>
         </form>
       </FormProvider>
     </Box>

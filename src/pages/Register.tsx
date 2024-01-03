@@ -3,6 +3,7 @@ import FieldInput from "../components/FieldInput";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FormProvider, RegisterOptions, useForm } from "react-hook-form";
+import { registerFields } from "../config/register";
 
 export interface RegisterField {
   label: string;
@@ -10,47 +11,6 @@ export interface RegisterField {
   placeholder?: string;
   validation: RegisterOptions;
 }
-
-const registerFields: RegisterField[] = [
-  {
-    label: "Name",
-    validation: {
-      required: {
-        value: true,
-        message: `required: name`,
-      },
-    },
-  },
-  {
-    label: "Email address",
-    validation: {
-      required: {
-        value: true,
-        message: `required: email address`,
-      },
-    },
-  },
-  {
-    label: "Password",
-    type: "password",
-    validation: {
-      required: {
-        value: true,
-        message: `required: password`,
-      },
-    },
-  },
-  {
-    label: "Confirm password",
-    type: "password",
-    validation: {
-      required: {
-        value: true,
-        message: `required: password confirmation`,
-      },
-    },
-  },
-];
 
 export interface Registration {
   name: string;

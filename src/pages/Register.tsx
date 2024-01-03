@@ -3,15 +3,12 @@ import FieldInput from "../components/FieldInput";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FormProvider, useForm } from "react-hook-form";
-import { registerFields, registerValidationSchema } from "../config/register";
+import {
+  Registration,
+  registerFields,
+  registerValidationSchema,
+} from "../config/register";
 import { yupResolver } from "@hookform/resolvers/yup";
-
-export interface Registration {
-  name: string;
-  password: string;
-  email: string;
-  confirm: string;
-}
 
 const Register = () => {
   const [registration, setRegistration] = useState({
@@ -29,7 +26,7 @@ const Register = () => {
   });
 
   return (
-    <div className="main-container">
+    <div className="main-container full-height">
       <Box className="card-container register-form">
         <Box
           sx={{
@@ -61,6 +58,7 @@ const Register = () => {
                   type={field.type}
                   referenceObject={registration}
                   setObject={setRegistration}
+                  name={field.id}
                 />
               ))}
               <Button variant="contained" size="large" onClick={onSubmit}>

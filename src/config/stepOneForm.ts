@@ -1,3 +1,4 @@
+import { documentTypes, genders } from "../services/ApiFormData";
 import { FormField } from "./register";
 
 export interface Option {
@@ -24,6 +25,7 @@ export const stepOneFields: FormField[] = [
     label: "Tipo de documento",
     type: "dropdown",
     id: "documentType",
+    options: documentTypes,
   },
   {
     label: "Número de documento",
@@ -34,6 +36,7 @@ export const stepOneFields: FormField[] = [
     label: "Género",
     type: "dropdown",
     id: "gender",
+    options: genders,
   },
   {
     label: "Apellido/s",

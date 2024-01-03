@@ -1,14 +1,18 @@
-import { TextField, Typography } from "@mui/material";
+import { MenuItem, Select, TextField, Typography } from "@mui/material";
 import { handleFieldChange } from "../helpers/formHandlers";
 import { FieldError, useFormContext } from "react-hook-form";
+import { FieldType } from "../config/register";
+import { Option } from "../config/stepOneForm";
 
 interface FieldInputProps<objectType> {
   label: string;
   placeholder?: string;
-  type?: string;
+  type: FieldType;
   referenceObject: objectType;
   setObject: (state: React.SetStateAction<objectType>) => void;
   error?: FieldError;
+  name: string;
+  options?: Option[];
 }
 
 function FieldInput<objectType>({
@@ -17,34 +21,50 @@ function FieldInput<objectType>({
   type,
   referenceObject,
   setObject,
+  name,
+  options,
 }: FieldInputProps<objectType>) {
   const {
     register,
     formState: { errors },
   } = useFormContext();
-  const lowercaseLabel = label.toLowerCase().split(" ")[0];
 
   return (
     <>
-      <TextField
-        variant="filled"
-        label={label}
-        placeholder={placeholder}
-        {...register(lowercaseLabel)}
-        onChange={(event) => {
-          handleFieldChange<objectType>(
-            lowercaseLabel,
-            event.target.value,
-            referenceObject as objectType,
-            setObject
-          );
-        }}
-        type={type}
-        error={!!errors[lowercaseLabel]}
-      />
+      {(type === "text" || type === "password") && (
+        <TextField
+          variant="filled"
+          label={label}
+          placeholder={placeholder}
+          {...register(name)}
+          onChange={(event) => {
+            handleFieldChange<objectType>(
+              name,
+              event.target.value,
+              referenceObject as objectType,
+              setObject
+            );
+          }}
+          type={type}
+          error={!!errors[name]}
+        />
+      )}
+
+      {type === "dropdown" && options && (
+        <Select>
+          {options.map((option) => (
+            <MenuItem value={option.value}>{option.label}</MenuItem>
+          ))}
+        </Select>
+      )}
+
+      {type !== "text" && type !== "password" && type !== "dropdown" && (
+        <Typography>{label}</Typography>
+      )}
+
       {errors && (
         <Typography sx={{ pt: 0 }}>
-          {errors?.[lowercaseLabel]?.message as string}
+          {errors?.[name]?.message as string}
         </Typography>
       )}
     </>

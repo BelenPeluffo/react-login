@@ -94,14 +94,16 @@ export const stepOneFields: FormField[] = [
 
 export const stepOneFormValidationSchema = Yup.object().shape({
   documentType: Yup.number().required(),
-  documentNumber: Yup.number().required(),
+  documentNumber: Yup.number().required().max(9999999999), // validación especial (dni)
   gender: Yup.number().required(),
-  lastname: Yup.string().required(),
-  name: Yup.string().required(),
-  dateOfBirth: Yup.date().required(),
-  countryOfBirth: Yup.string().required(),
-  provinceOfBirth: Yup.string().required(),
-  placeOfBirth: Yup.string().required(),
-  schoolYear: Yup.number().required(),
-  grade: Yup.number().required(),
+  lastname: Yup.string().required().max(40),
+  name: Yup.string().required().max(40),
+  dateOfBirth: Yup.date()
+    .required()
+    .max(new Date(), "La fecha no puede ser mayor a la actual"),
+  countryOfBirth: Yup.string().required().max(40),
+  provinceOfBirth: Yup.string().required().max(53),
+  placeOfBirth: Yup.string().required().max(40),
+  schoolYear: Yup.number().required().min(1900).max(new Date().getFullYear()), // validación especial (year limit)
+  grade: Yup.number().required().max(9),
 });

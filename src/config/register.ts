@@ -1,25 +1,41 @@
 import * as Yup from "yup";
 
+export type FieldType = "text" | "password" | "dropdown" | "date";
+
 export interface FormField {
   label: string;
-  type?: string;
+  type: FieldType;
   placeholder?: string;
+  id: string;
+}
+
+export interface Registration {
+  name: string;
+  password: string;
+  email: string;
+  confirm: string;
 }
 
 export const registerFields: FormField[] = [
   {
     label: "Name",
+    type: "text",
+    id: "name",
   },
   {
     label: "Email address",
+    type: "text",
+    id: "email",
   },
   {
     label: "Password",
     type: "password",
+    id: "password"
   },
   {
     label: "Confirm password",
     type: "password",
+    id: "confirm",
   },
 ];
 

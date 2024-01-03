@@ -8,7 +8,9 @@ function App() {
   const auth = useContext(AuthContext);
 
   return (
-    <div className="main-container">{auth.token ? <Logged /> : <Login />}</div>
+    <div className={`main-container ${auth.token ? "" : "full-height"}`}>
+      {auth.token ? <Logged /> : <Login />}
+    </div>
   );
 }
 

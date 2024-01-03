@@ -1,5 +1,6 @@
 import { documentTypes, genders } from "../services/ApiFormData";
 import { FormField } from "./register";
+import * as Yup from "yup";
 
 export interface Option {
   value: number;
@@ -90,3 +91,17 @@ export const stepOneFields: FormField[] = [
     width: "45%",
   },
 ];
+
+export const stepOneFormValidationSchema = Yup.object().shape({
+  documentType: Yup.number().required(),
+  documentNumber: Yup.number().required(),
+  gender: Yup.number().required(),
+  lastname: Yup.string().required(),
+  name: Yup.string().required(),
+  dateOfBirth: Yup.date().required(),
+  countryOfBirth: Yup.string().required(),
+  provinceOfBirth: Yup.string().required(),
+  placeOfBirth: Yup.string().required(),
+  schoolYear: Yup.number().required(),
+  grade: Yup.number().required(),
+});

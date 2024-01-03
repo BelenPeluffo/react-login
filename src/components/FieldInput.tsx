@@ -51,7 +51,7 @@ function FieldInput<objectType>({
       )}
 
       {type === "dropdown" && options && (
-        <Select>
+        <Select label={label}>
           {options.map((option) => (
             <MenuItem value={option.value}>{option.label}</MenuItem>
           ))}

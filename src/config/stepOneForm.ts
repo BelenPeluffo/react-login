@@ -8,6 +8,7 @@ export interface Option {
 }
 
 export interface StepOneData {
+  [index: string]: number | Date | string;
   documentType: number;
   documentNumber: number;
   gender: number;
@@ -115,3 +116,33 @@ export const stepOneFormValidationSchema = Yup.object().shape({
     ), // validación especial (year limit)
   grade: Yup.number().required().max(9),
 });
+
+const EXCEPTIONS_C3 = [
+  "placeOfBirth",
+  "gender",
+  "countryOfBirth",
+  "provinceOfBirth",
+];
+const EXCEPTIONS_C4 = ["schoolYear", "grade"];
+
+export const disabilityParser = (referenceObject: StepOneData, useCase: number) => {
+  console.log('Ejecutando disabilityParser');
+  const props = Object.keys(referenceObject);
+  const disabilityCases: { [index: string]: string[] } = {
+    CASE_ONE: [],
+    CASE_TWO: props,
+    CASE_THREE: props.filter((prop) => !EXCEPTIONS_C3.includes(prop)),
+    CASE_FOUR: props.filter((prop) => !EXCEPTIONS_C4.includes(prop)),
+  };
+
+  switch (useCase) {
+    case 1:
+      return disabilityCases.CASE_ONE;
+    case 2:
+      return disabilityCases.CASE_TWO;
+    case 3:
+      return disabilityCases.CASE_THREE;
+    case 4:
+      return disabilityCases.CASE_FOUR;
+  }
+};

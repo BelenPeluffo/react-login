@@ -92,6 +92,8 @@ export const stepOneFields: FormField[] = [
   },
 ];
 
+const SYSTEM_CURRENT_DATE = new Date();
+
 export const stepOneFormValidationSchema = Yup.object().shape({
   documentType: Yup.number().required(),
   documentNumber: Yup.number().required().max(9999999999), // validación especial (dni)
@@ -99,11 +101,17 @@ export const stepOneFormValidationSchema = Yup.object().shape({
   lastname: Yup.string().required().max(40),
   name: Yup.string().required().max(40),
   dateOfBirth: Yup.date()
-    .required()
-    .max(new Date(), "La fecha no puede ser mayor a la actual"),
+    .max(SYSTEM_CURRENT_DATE, "La fecha no puede ser mayor a la actual")
+    .required(),
   countryOfBirth: Yup.string().required().max(40),
   provinceOfBirth: Yup.string().required().max(53),
   placeOfBirth: Yup.string().required().max(40),
-  schoolYear: Yup.number().required().min(1900).max(new Date().getFullYear()), // validación especial (year limit)
+  schoolYear: Yup.number()
+    .required()
+    .min(1900)
+    .max(
+      new Date().getFullYear(),
+      "El ciclo lectivo no puede ser mayor al año en curso"
+    ), // validación especial (year limit)
   grade: Yup.number().required().max(9),
 });

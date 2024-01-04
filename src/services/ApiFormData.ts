@@ -25,3 +25,22 @@ export const genders: Option[] = [
         label: "Non binary",
       },
 ]
+
+export const useCases: Option[] = [
+  {
+    label: "!is_from_api && isAllAnaliticsStatusLesSix",
+    value: 1,
+  },
+  {
+    label: "!is_from_api && isCancelledAndNotEditable",
+    value: 2,
+  },
+  {
+    label: "is_from_api && editStep1",
+    value: 3,
+  },
+  {
+    label: "!isForAdditionalCareer && !is_from_api",
+    value: 4,
+  },
+]

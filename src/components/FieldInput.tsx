@@ -12,6 +12,7 @@ import { FieldType } from "../config/register";
 import { Option } from "../config/stepOneForm";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 interface FieldInputProps<objectType> {
   label: string;
@@ -23,6 +24,7 @@ interface FieldInputProps<objectType> {
   name: string;
   options?: Option[];
   width?: string;
+  disabled?: boolean;
 }
 
 function FieldInput<objectType>({
@@ -34,6 +36,7 @@ function FieldInput<objectType>({
   name,
   options,
   width,
+  disabled,
 }: FieldInputProps<objectType>) {
   const {
     register,
@@ -59,13 +62,20 @@ function FieldInput<objectType>({
           type={type}
           error={!!errors[name]}
           sx={{ width: "100%" }}
+          value={referenceObject[name]}
+          disabled={disabled}
         />
       )}
 
       {type === "dropdown" && options && (
         <Box sx={{ width: "100%" }}>
           <InputLabel>{label}</InputLabel>
-          <Select displayEmpty sx={{ width: "100%" }} error={!!errors[name]}>
+          <Select
+            displayEmpty
+            sx={{ width: "100%" }}
+            error={!!errors[name]}
+            disabled={disabled}
+          >
             <MenuItem>
               <em>Seleccioná {label.toLowerCase()}</em>
             </MenuItem>
@@ -78,7 +88,22 @@ function FieldInput<objectType>({
 
       {type === "date" && (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker label={label} sx={{ width: "100%" }} />
+          <DatePicker
+            label={label}
+            sx={{ width: "100%" }}
+            // value={referenceObject[name]}
+            // maxDate={new Date()}
+            onChange={(newValue: Date | null) => {
+              console.log("newValue?", dayjs(newValue as Date).toString());
+              handleFieldChange<objectType>(
+                name,
+                dayjs(newValue as Date).toString(),
+                referenceObject as objectType,
+                setObject
+              );
+            }}
+            disabled={disabled}
+          />
         </LocalizationProvider>
       )}
 

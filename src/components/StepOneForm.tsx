@@ -42,6 +42,7 @@ const StepOneForm = () => {
   const methods = useForm<StepOneData>({
     resolver: yupResolver(stepOneFormValidationSchema),
   });
+  const errors = methods.formState.errors;
 
   const onCancel = () => {};
 
@@ -74,6 +75,10 @@ const StepOneForm = () => {
       disabilitySetter(disabledFields as string[]);
     }
   }, [useCase]);
+
+  useEffect(() => {
+    console.log('errors',errors);
+  },[errors])
 
   return (
     <Box
